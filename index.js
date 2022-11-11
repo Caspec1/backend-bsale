@@ -9,8 +9,6 @@ dotenv.config()
 
 app.use(express.json())
 
-
-// var whitelist = ['http://127.0.0.1:5500/']
 var corsOptions = {
     origin: '*'
 }
