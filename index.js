@@ -17,4 +17,9 @@ app.use(cors(corsOptions))
 app.use('/api/products', productRoutes)
 app.use('/api/category', categoryRoutes)
 
-app.listen(3000)
+const PORT = process.env.PORT || 4000;
+
+
+app.listen(PORT, () => {
+    console.log(`Corriendo por el puerto ${PORT}`)
+})
