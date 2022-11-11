@@ -17,26 +17,64 @@ const getProducts = async (req, res) => {
         offSet = 40
     }
 
-    const [result] = await pool.query(`SELECT * FROM product LIMIT ${items} OFFSET ${offSet}`)
-
-    res.json({result, totalData})
+    try {
+        const [result] = await pool.query(`SELECT * FROM product LIMIT ${items} OFFSET ${offSet}`)
+        res.json({result, totalData})
+    } catch (error) {
+        const e = new Error({msg: 'No existen resultados'})
+        res.status(404).json({msg: e.message})
+    }
+    
 }
 
 const getProduct = async (req, res) => {
     const {category, search} = req.body
 
     if(category !== 0 && search !== '') {
-        const [result] = await pool.query(`SELECT * FROM product WHERE category=${category} AND name LIKE '%${search}%'`)
-        res.json(result)
+        try {
+            const [result] = await pool.query(`SELECT * FROM product WHERE category=${category} AND name LIKE '%${search}%'`)
+            if(result.length > 0) {
+                res.json(result)
+            } else {
+                res.json([])
+            }
+        } catch (error) {
+            console.log(error)
+        }
     } else if (category === 0 && search !== '') {
-        const [result] = await pool.query(`SELECT * FROM product WHERE name LIKE '%${search}%'`)
-        res.json(result)
+        try {
+            const [result] = await pool.query(`SELECT * FROM product WHERE name LIKE '%${search}%'`)
+            if(result.length > 0) {
+                res.json(result)
+            } else {
+                res.json([])
+            }
+        } catch (error) {
+            console.log(error)
+        }
     } else if (category !== 0 && search === '') {
-        const [result] = await pool.query(`SELECT * FROM product WHERE category=${category}`)
-        res.json(result)
+        try {
+            const [result] = await pool.query(`SELECT * FROM product WHERE category=${category}`)
+            if(result.length > 0) {
+                res.json(result)
+            } else {
+                res.json([])
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        
     } else {
-        const [result] = await pool.query('SELECT * FROM product')
-        res.json(result)
+        try {
+            const [result] = await pool.query('SELECT * FROM product')
+            if(result.length > 0) {
+                res.json(result)
+            } else {
+                res.json([])
+            }
+        } catch (error) {
+            console.log(error)
+        }  
     }
 }
 
